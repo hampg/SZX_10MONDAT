@@ -1,0 +1,320 @@
+<!doctype html>
+<html lang="hu">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>KOLLEKTÍV SZERZŐDÉST! MOST!</title>
+
+  <!-- Irányelvek: rigid rács, éles sarkak, kopott él, finom árnyék; nagyobb betű a fronton; alul stencil-linkek egyedi highlighttal. -->
+
+  <!-- Betűk: Fjalla One (plakát), Inter (szöveg), Stardos Stencil (linkekhez) -->
+  <link href="https://fonts.googleapis.com/css2?family=Fjalla+One&family=Inter:wght@400;600&family=Black+Ops+One&display=swap" rel="stylesheet">
+
+
+  <style>
+    :root{
+      --paper: #FAF3E0;  /* háttér */
+      --ink:   #111111;  /* kontúr/szöveg */ 
+      --red:   #C1121F;  /* vörös csempe */
+      --blue:  #003049;  /* kék csempe */
+      --yellow:#F4D35E;  /* sárga csempe */
+      --white: #FFFFFF;  /* fehér csempe */
+
+      --bg: var(--paper);
+      --text: var(--ink);
+    }
+
+    *{box-sizing:border-box}
+    html, body { min-height: 100%; background: var(--bg); color: var(--text); }
+    body { margin: 0; font-family: 'Inter', system-ui, sans-serif; }
+
+    body::before{ content:""; position:fixed; inset:-2vmax; pointer-events:none; z-index:0;
+      background-image:url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='120' height='120'><filter id='n'><feTurbulence type='fractalNoise' baseFrequency='1.1' numOctaves='2' stitchTiles='stitch'/><feColorMatrix type='saturate' values='0'/><feComponentTransfer><feFuncA type='table' tableValues='0 0 0.08 0.12'/></feComponentTransfer></filter><rect width='120' height='120' filter='url(%23n)'/></svg>");
+      mix-blend-mode:multiply; opacity:.2; }
+
+    header{ position:relative; z-index:1; text-align:center; padding:28px 16px 6px; }
+    header h1{ font-family:'Fjalla One',sans-serif; text-transform:uppercase; letter-spacing:.5px; margin:0 0 10px; font-size:clamp(26px,3.6vw,44px); }
+    header .lead{ margin:0 auto; color:#2a2a2a; font-size:15px; text-align: justify; max-width:1100px; line-height:1.5; padding:0 16px; }
+
+    .grid{ position:relative; z-index:1;text-align: justify width:min(1100px,94vw); margin:24px auto 24px; display:grid; gap:16px;
+      grid-template-columns:repeat(auto-fit,minmax(260px,1fr)); grid-auto-flow:row dense; }
+
+    .tile{ position:relative; height:220px; border:none; padding:0; background:transparent; cursor:pointer; perspective:1000px; outline-offset:4px; }
+    .tile.tall{ height:280px; }
+    .tile.hero{ height:320px; }
+    @media (min-width:980px){ .span-2{ grid-column:span 2; } }
+    .tile:focus-visible{ outline:3px solid #0b3d91; }
+
+    .tile-inner{ position:absolute; inset:0; transition:transform 420ms cubic-bezier(.25,.8,.25,1); transform-style:preserve-3d; }
+    .tile.flipped .tile-inner{ transform:rotateY(180deg); }
+
+    .face{ position:absolute; inset:0; display:flex; align-items:center; justify-content:center; padding:20px; text-align:center; 
+      backface-visibility:hidden; -webkit-backface-visibility:hidden; border:3px solid var(--ink);
+      box-shadow: 3px 3px 6px rgba(0,0,0,.15), 0 0 0 2px rgba(0,0,0,.05) inset;
+      -webkit-mask-image:url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='320' height='320'><filter id='rough'><feTurbulence type='fractalNoise' baseFrequency='1.1' numOctaves='3' stitchTiles='stitch'/><feDisplacementMap in='SourceGraphic' scale='3'/></filter><rect width='320' height='320' filter='url(%23rough)'/></svg>");
+      -webkit-mask-size:cover; mask-image:url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='320' height='320'><filter id='rough'><feTurbulence type='fractalNoise' baseFrequency='1.1' numOctaves='3' stitchTiles='stitch'/><feDisplacementMap in='SourceGraphic' scale='3'/></filter><rect width='320' height='320' filter='url(%23rough)'/></svg>");
+      mask-size:cover; }
+
+    .front{ color:#fff; font-family:'Fjalla One',sans-serif; text-transform:uppercase; letter-spacing:.4px; text-shadow:1px 1px 0 rgba(0,0,0,.25);
+      font-size:clamp(24px,3.4vw,36px); line-height:1.2; }
+    .back{ background:var(--ink); color:var(--paper); transform:rotateY(180deg); font-weight:600; letter-spacing:.2px; line-height:1.35; font-size:16px; padding:24px; }
+
+    .c-red{ background:var(--red); }
+    .c-ink{ background:var(--ink); }
+    .c-blue{ background:var(--blue); }
+    .c-yellow{ background:var(--yellow); color:var(--ink); }
+    .c-paper{ background:var(--paper); color:var(--ink); }
+    .c-white{ background:var(--white); color:var(--ink); }
+
+    .stencil-links{ display:flex; gap:18px; justify-content:center; flex-wrap:wrap; padding:12px 16px 40px; }
+
+    .stencil-links a{ font-family:'Black Ops One', system-ui, sans-serif; text-transform:uppercase; text-decoration:none; color:var(--ink);
+      font-size:clamp(18px,2.2vw,22px); letter-spacing:.5px; padding:8px 12px; position:relative; transition:all .2s ease; }
+
+    .stencil-links a::before {
+      content: "";
+      position: absolute;
+      inset: 0;
+      background: #F4D35E;
+      z-index: -1;
+      opacity: 0.15;
+      transition: opacity .25s ease;
+    }
+
+    .stencil-links a:nth-child(1)::before { transform: rotate(-2deg) scale(1.1, 1.05); }
+    .stencil-links a:nth-child(2)::before { transform: rotate(1.5deg) scale(1.2, 1.1); }
+    .stencil-links a:nth-child(3)::before { transform: rotate(-0.5deg) scale(1.15, 1.08); }
+
+    .stencil-links a:hover::before { opacity: 0.5; }
+    .stencil-links a:hover { transform: translateY(-1px); filter: brightness(1.05); }
+      
+      body {
+  font-family: 'Inter', sans-serif;
+  margin: 40px auto;
+  max-width: 700px;
+  line-height: 1.6;
+  color: #222;
+  background: #fafafa;
+  padding: 20px;          /* legyen egy kis belső margó a keret miatt */
+  border: 2px solid #000; /* ez adja a fekete 2px keretet */
+}
+
+      .hl-hand{
+  position: relative;      /* keret a ::before-nek */
+  display: inline-block;   /* legyen saját doboza */
+  z-index: 0;              /* új stacking context */
+  padding: 0 .08em;        /* pici ráhagyás a széleken */
+}
+
+.hl-hand{
+  position: relative;
+  display: inline-block;
+  z-index: 0;
+  padding: 0 .08em;
+}
+
+.hl-hand::before{
+  content: "";
+  position: absolute;
+  left: -0.06em;
+  right: -0.06em;
+  top: 50%;
+  height: 0.8em;
+  transform: translateY(-50%) rotate(var(--tilt, -1deg));
+  background: rgba(244, 211, 94, 0.5);
+  border-radius: 2px;
+  z-index: -1;
+  pointer-events: none;
+}
+
+mark {
+  background-color: #f4d35e; /* pasztell sárga */
+  padding: 0.1em 0.25em;
+  border-radius: 2px;
+}
+
+
+  </style>
+</head>
+<body>
+  <header>
+    <h1>KOLLEKTÍV SZERZŐDÉST! MOST!</h1>
+    <p class="lead">A kollektív szerződés a munkáltató és a szakszervezet között létrejövő, jogilag kötelező megállapodás, amely rögzíti a bérezés, a munkaidő és szabadság, a távmunka, a jutalmak (jublieumi jutalom, végkielégítés) kereteit, valamint az egyeztetés és vitakezelés szabályait. Így az ígéretek számonkérhetőek lesznek. 
+A kollektív szerződésbe foglalt minimumok minden BME dolgozóra vonatkoznak, és lehetőséget adnak arra, hogy a Munka Törvénykönyvén és az egyetemi szabályzatokon túlmutató kollektív előnyöket érjünk el – közösen, tárgyalás útján.
+</p>
+      
+ <h2>KISZÁMÍTHATÓ BÉREMELÉST!</h2>
+ 
+   <p class="lead">A MODELLVÁLTÁSKOR KOMOLY ÍGÉRETET KAPTUNK: MÉG 2025-BEN ÚJABB BÉREMELÉSRE KERÜL SOR, AMIT 2027-RE ÉRDEMI FELZÁRKÓZTATÁS KÖVET. A KISZÁMÍTHATÓ BÉREMELÉSRE INTÉZMÉNYES GARANCIÁT A KOLLEKTÍV SZERZŐDÉS BIZTOSÍTHAT.  </p>
+
+      <p style="text-align: justify;  line-height:1.5; ">A BME-n dolgozók bére ma messze elmarad attól a szinttől, ami fedezni tudná az elmúlt évek inflációját és a megélhetési költségek emelkedését. A modellváltáskor azt ígérték, hogy a bérek rendezése prioritás lesz, és még az adott évben újabb emelésre számíthatunk – 2027-re pedig érdemi felzárkóztatásra. Közben a megélhetési költségek folyamatosan nőnek, a munkaterhelés nem csökken. Az oktatók, kutatók és az adminisztratív, technikai dolgozók egyaránt fenntartói az egyetemi működésnek, mégis sokan a létminimum közelében keresnek.  A kollektív szerződés az egyetlen intézményes garancia arra, hogy a dolgozók ne eseti ígéretekre, hanem valódi, tárgyalásos, kiszámítható megállapodásokra épülhessen a jövőnk. Ez biztosítja, hogy <mark>a bérfejlesztés ne kampányfüggő, hanem kiszámítható, közösen kialkudott rendszeren</mark> alapuljon.
+
+  </p>
+
+  
+
+<h2>JUTALMAZZÁK MEG AZ ELKÖTELEZŐDÉST!</h2>
+
+ <p class="lead">MINDENKINEK, AKI MUNKÁJÁVAL ELKÖTELEZŐDÖTT AZ EGYETEM FELÉ, JÁRJON RENDSZERESEN JUBILEUMI JUTALOM.<p>
+
+<p style="text-align: justify;  line-height:1.5; ">Az Egyetemnek szüksége van tapasztalt, elkötelezett munkatársakra, akik biztosítják oktatás és kutatás kiszámítható minőségét A dolgozóknak pedig szüksége van kiszámítható, biztonságos életpályára.
+A jubileumi jutalom ennek egy fontos, egyszerre szimbolikus és anyagi elismerése. A kollektív szerződéssel rögzíteni tudjuk a jubileumi jutalom mértékét. Öt év munkaviszony után egyhavi, tíz év munkaviszony után kéthavi, tizenöt év munkaviszony után háromhavi, negyven év munkaviszony után hathavi távolléti díjnak megfelelő összeg legyen. 
+    <mark>A jubileumi jutalom nem kegy, hanem az elköteleződés tervezhető elismerése.</mark></p>
+
+
+<h2>MÉLTÁNYOS MUNKAIDŐT MINDEN DOLGOZÓNAK!</h2>
+
+ <p class="lead">HOSSZÚ	A MUNKAIDŐ MÉLTÁNYOS MEGSZERVEZÉSE MINDENKINEK JÁR – MUNKAKÖRTŐL FÜGGETLENÜL. A SZABÁLYOZÁSNAK MINDENKI SZÁMÁRA BIZTOSÍTANI KELL A PIHENŐIDŐ TISZTELETBEN TARTÁSÁT ÉS A FIZETETLEN TÚLÓRÁZTATÁS MEGSZÜNTETÉSÉT!<p>
+
+<p style="text-align: justify;  line-height:1.5; ">Az oktatók, kutatók a tanórákon kívül kötetlen munkaidő-beosztásban dolgoznak, de ez nem jelent korlátlan elérhetőséget: minden munkavállalónak joga van a pihenéshez és a magánélethez. A nem oktató-kutatói munkakörben dolgozók esetében is szükség van kiszámítható munkaidőre. A napi törzsidő biztosítja az együttműködést, a peremidő a rugalmasságot. A távmunka digitális elérhetőség nem vezethet állandó készenléthez vagy rejtett túlórához Határidők kijelölésénél figyelembe kell venni a dolgozók munka- és pihenőidejét.
+<mark>Csak a kollektív szerződés garantálja kiszámíthatóan, hogy a rugalmas munkavégzés ne kizsákmányolás, hanem bizalom alapú együttműködés legyen.</mark></p>
+
+
+<h2>MINDEN DOLGOZÓNAK JÁRJON A OTTHONI TÁVMUNKA LEHETŐSÉGE!</h2>
+
+ <p class="lead">AHOL A MUNKA JELLEGE MEGENGEDI, MINDEN DOLGOZÓNAK LEGYEN LEHETŐSÉGE AZ OTTHONI TÁVMUNKAVÉGZÉSRE - A MUNKAHELYI VEZETŐVEL EGYEZTETETT KERETEK KÖZÖTT.<p>
+
+<p style="text-align: justify;  line-height:1.5; ">Az oktatói, kutatói munkakörökben már évek óta bevett gyakorlat a távmunka. A Covid-időszak megmutatta, hogy az online együttműködés és tudásmegosztás sok esetben ugyanolyan hatékony, mint a személyes jelenlét. A járvány után természetes módon alakult ki egy kevert működésmód, amelyben az oktatók, kutatók a konkrét helyzetekhez igazodóan használtak hol jelenléti, hol online megoldásokat. 
+    Ezt a lehetőséget az egyetemnek biztosítania kell minden olyan munkakörben, ahol a feladat nem követeli meg a folyamatos személyes jelenlétet. <mark>A távmunka nem kiváltság, hanem a bizalom és a hatékonyság adekvát formája.</mark>mark></p>
+
+
+<h2>JÓ MUNKAKÖRÜLMÉNYEKET!</h2>
+
+ <p class="lead">MINDEN DOLGOZÓT MEGILLET AZ EGÉSZSÉGES ÉS BIZTONSÁGOS MUNKAKÖRÜLMÉNYEKHEZ VALÓ JOG. ENÉLKÜL A MINŐSÉGI OKTATÁS, KUTATÁS ÉS ADMINISZTRÁCIÓ NEM FENNTARTHATÓ. <p>
+
+<p style="text-align: justify;  line-height:1.5; ">Az egyetemnek minden zárt munkahelyen biztosítani kell az egészséges munkavégzés feltételeit – legyen szó megfelelő hőmérsékletről, világításról vagy ergonomikus munkaeszközökről.
+A tantermek, irodák nem lehetnek túl hidegek télen, elviselhetetlenül melegek nyáron.  Ha a körülmények nem felelnek meg az előírt hőmérsékleti határoknak (21–24 ⁰C), a dolgozók számára távmunkát kell biztosítani, amíg a feltételek helyre nem állnak. 
+A munkáltató felelőssége, hogy minden dolgozó számára biztosítson a munkavégzésre alkalmas eszközöket és infrastruktúrát, ergonomikus széket, asztalt!
+<mark>Az egészséges munkakörnyezet nem luxus, hanem alapvető munkajog.<mark></p>
+
+
+<h2>AZ OKTATÓK, KUTATÓK SZÁMÁRA BIZTOSÍTOTT TÖBBLET-SZABADSÁGNAPOK NÉLKÜLÖZHETETLENEK A TUDÁS FOLYAMATOS MEGÚJÍTÁSÁHOZ, BŐVÍTÉSÉHEZ.</h2>
+
+ <p class="lead">AZ EGYETEMI SZÜNETEK NEM SZABADSÁGOK A SZÓ HÉTKÖZNAPI ÉRTELMÉBEN: EZEK AZ IDŐSZAKOK A FOLYAMATOS MEGÚJULÁST, AZ ÖNKÉPZÉST, A FELKÉSZÜLÉST SZOLGÁLJÁK. A TÖBBLET-SZABADNAPOK A FOLYAMATOS TOVÁBBFEJLŐDÉS ALAPVETŐ FELTÉTELÉT JELENTIK. <p>
+
+<p style="text-align: justify;  line-height:1.5; ">A közalkalmazotti státusz többlet-szabadságnapokat biztosított az egyetemi oktatók, kutatók számára. A fenntartóváltással a dolgozók munkavállalói státuszba kerültek, és ezzel veszélybe került ez a jogosultság, mert a Munka Törvénykönyve már nem garantálja a többlet szabadnapokat. 
+A többlet-szabadság tehát nem kiváltság, hanem a minőségi oktatás és kutatás feltétele. Aki nem kap időt a megújulásra, annak a tudása gyorsan elavul.
+<mark>A kollektív szerződés az egyetlen garancia arra, hogy ez a jog ne vesszen el, hanem megerősödjön.<mark></p>
+
+
+<h2>7-ES</h2>
+
+ <p class="lead">HOSSZÚ
+
+<p style="text-align: justify;  line-height:1.5; ">behívó</p>
+
+
+<h2>BIZTOSÍTANI KELL A SZAKSZERVEZET SZÁMÁRA A TÖRVÉNYES KOMMUNIKÁCIÓS LEHETŐSÉGEKET!</h2>
+
+ <p class="lead">A SZAKSZERVEZET CSAK AKKOR TUD VALÓDI ÉRDEKVÉDELMET ELLÁTNI, HA AZ EGYETEM VEZETÉSE BIZTOSÍTJA SZÁMÁRA A TÖRVÉNYBEN GARANTÁLT KOMMUNIKÁCIÓS JOGOKAT ÉS FELÜLETEKET. <p>
+
+<p style="text-align: justify;  line-height:1.5; ">A kollektív szerződésben garantálni kell a szakszervezet kommunikációs jogát és a nyilvánossághoz fordulás lehetőségét.
+Az egyetem jó hírnevére való hivatkozás nem lehet indok arra, hogy a munkáltató és dolgozók közti valós érdekkonfliktust ne lehessen a nyilvánosság elé tárni.
+Az érdekvédelem csak akkor valósulhat meg, ha a szakszervezet hozzáfér minden releváns adathoz, hogy tájékoztathassa a munkavállalókat, a teljes egyetemi közösséget a tevékenységéről. A szervezkedés szabadsága megköveteli, hogy a szakszervezet szabadon használhassa az egyetemen elérhető hivatalos kommunikációs technológiákat, felületeket.
+A szabad tájékoztatás a demokratikus működés és a hatékony érdekképviselet feltétele.</p>
+
+
+<h2>A KUTATÁS SZABADSÁGA ELVÁLASZTHATATLAN AZ EGYETEMI DOLGOZÓK SZABAD VÉLEMÉNYNYILVÁNÍTÁSI SZABADSÁGÁTÓL.</h2>
+
+ <p class="lead">AZ EGYETEMEN SZÜLETŐ ÚJ TUDÁS SZÉLESKÖRŰ TERJESZTÉSE NEM CSAK AZ EGYETEM ÉS A TUDOMÁNY SZÁMÁRA FONTOS, HANEM ALAPVETŐ TÁRSADALMI ÉRDEK IS, EZÉRT NEM SZABAD KORLÁTOZNI AZ OKTATÓK, KUTATÓK VÉLEMÉNYNYILVÁNÍTÁSI SZABADSÁGÁT.<p>
+
+
+<p style="text-align: justify;  line-height:1.5; ">Az egyetemen lényege az oktatók, kutatók folyamatos végzett tudástermelő és tudásátadó tevékenysége. A kutatás, a tudástermelés nemzetközi, nyilvános színtereken zajlik, ahol a szakértők közösen, szabadon, nyílt formában keresik a tudományos igazságokat. 
+Az oktatás pedig nemzeti szinten biztosítja a szabad tanulás és gondolkodás lehetőségét a diákok számára. Ehhez biztosítani kell azt is, hogy az egyetemi oktatók, kutatók nyilvánosan is kifejthessék véleményüket – ne csak a tudóstársaik és hallgatóik előtt, hanem a társadalom egészét is megszólítva.
+Az egyetem nem vállalat, és nem működhet úgy, mint egy központilag irányított kommunikációs gépezet. Az egységes kommunikációra, arculatra hivatkozás nem indok arra, túlszabályozzák nyilvános szakmai, kritikus megszólalásokat.
+</p>
+
+<h2>10-ES</h2>
+
+ <p class="lead">HOSSZÚ<p>
+
+<p style="text-align: justify;  line-height:1.5; ">behívó</p>
+
+
+  </header>
+
+<!--   <main class="grid">
+    <button class="tile tall" aria-pressed="false" aria-label="Béremelés">
+      <div class="tile-inner">
+        <div class="face front c-blue">KISZÁMÍTHATÓ BÉREMELÉST!</div>
+        <div class="face back">A MODELLVÁLTÁSKOR KOMOLY ÍGÉRETET KAPTUNK...</div>
+      </div>
+    </button>
+
+    <button class="tile" aria-pressed="false" aria-label="Biztonságos munkafeltételek">
+      <div class="tile-inner">
+        <div class="face front c-red">BIZTONSÁGOS MUNKAFELTÉTELEKET!</div>
+        <div class="face back">A DOLGOZÓK EGÉSZSÉGÉT ÉS JÓLÉTÉT...</div>
+      </div>
+    </button>
+
+    <button class="tile span-2" aria-pressed="false" aria-label="Valódi párbeszéd">
+      <div class="tile-inner">
+        <div class="face front c-yellow">VALÓDI PÁRBESZÉDET!</div>
+        <div class="face back">AZ ÉRDEKKÉPVISELET CSAK AKKOR HATÉKONY...</div>
+      </div>
+    </button>
+
+    <button class="tile hero" aria-pressed="false" aria-label="Oktatói szabadság">
+      <div class="tile-inner">
+        <div class="face front c-blue">OKTATÓI SZABADSÁGOT!</div>
+        <div class="face back">A TUDOMÁNYOS ÉS OKTATÁSI AUTONÓMIA...</div>
+      </div>
+    </button>
+
+    <button class="tile tall" aria-pressed="false" aria-label="Megalapozott megbecsülés">
+      <div class="tile-inner">
+        <div class="face front c-red">MEGBECSÜLÉST A DOLGOZÓKNAK!</div>
+        <div class="face back">A KÖZALKALMAZOTTAK NÉLKÜL AZ EGYETEM...</div>
+      </div>
+    </button>
+
+    <button class="tile" aria-pressed="false" aria-label="Átlátható pénzkezelés">
+      <div class="tile-inner">
+        <div class="face front c-paper">ÁTLÁTHATÓ PÉNZKEZELÉST!</div>
+        <div class="face back">A KÖLTSÉGVETÉS ÉS A FORRÁSOK FELHASZNÁLÁSA...</div>
+      </div>
+    </button>
+
+    <button class="tile tall" aria-pressed="false" aria-label="Egyenlő bánásmód">
+      <div class="tile-inner">
+        <div class="face front c-yellow">EGYENLŐ BÁNÁSMÓDOT!</div>
+        <div class="face back">AZ IGAZSÁGOS ÉS TÁRSADALMILAG FELELŐS...</div>
+      </div>
+    </button>
+
+    <button class="tile" aria-pressed="false" aria-label="Szolidaritás">
+      <div class="tile-inner">
+        <div class="face front c-white">SZOLIDARITÁST!</div>
+        <div class="face back">A KÖZÖS FELLÉPÉS A LEGHATÉKONYABB ESZKÖZ...</div>
+      </div>
+    </button>
+
+    <button class="tile" aria-pressed="false" aria-label="Oktatási minőség">
+      <div class="tile-inner">
+        <div class="face front c-blue">OKTATÁSI MINŐSÉGET!</div>
+        <div class="face back">AZ OKTATÁS MINŐSÉGE CSAK MOTIVÁLT...</div>
+      </div>
+    </button>
+
+    <button class="tile span-2" aria-pressed="false" aria-label="Közös jövő">
+      <div class="tile-inner">
+        <div class="face front c-red">KÖZÖS JÖVŐT!</div>
+        <div class="face back">EGYÜTT FORMÁLJUK AZ EGYETEM JÖVŐJÉT...</div>
+      </div>
+    </button>
+  </main> -->
+
+  <nav class="stencil-links">
+    <a href="https://444.hu" target="_blank" rel="noopener">CSATLAKOZZ!</a>
+    <a href="https://444.hu" target="_blank" rel="noopener">SZÓRÓLAPOK</a>
+    <a href="https://444.hu" target="_blank" rel="noopener">KSZ-TERVEZET</a>
+  </nav>
+
+  <script>
+    document.querySelectorAll('.tile').forEach(btn => {
+      btn.addEventListener('click', () => btn.classList.toggle('flipped'));
+    });
+  </script>
+</body>
+</html>
