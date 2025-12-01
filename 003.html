@@ -60,17 +60,17 @@
       display:block;
     }
 
-    .tile{
-      width:100%;
-      height:100%;
-      position:relative;
-      cursor:pointer;
-      perspective:1200px;
+.tile{
+  width:100%;
+  height:100%;
+  position:relative;
+  cursor:pointer;
+  perspective:1200px;
 
-      /* 👉 kis „tilt”, mint a csempés oldalon */
-      transform:rotate(-1.5deg);
-      transition:transform .3s ease;
-    }
+  /* 👉 alap: CSS-változó, JS fogja beállítani */
+  transform: rotate(var(--tilt, -1.5deg));
+  transition:transform .3s ease;
+}
 
     .tile:hover{
       transform:rotate(0deg) scale(1.01);
@@ -380,6 +380,12 @@
     const pageInfo = document.getElementById('pageInfo');
 
     let current = 0;
+
+    // 👉 véletlen dőlés minden csempének: kb. -2.0° és +2.0° között
+document.querySelectorAll('.tile').forEach(tile => {
+  const angle = (Math.random() * 4 - 2).toFixed(1); // -2.0 ... +2.0
+  tile.style.setProperty('--tilt', angle + 'deg');
+});
 
     function updateSlides(){
       slides.forEach((s, i) => {
