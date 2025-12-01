@@ -1,0 +1,436 @@
+<!doctype html>
+<html lang="hu">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Kollektív szerződés – lapozható csempék</title>
+
+  <link href="https://fonts.googleapis.com/css2?family=Fjalla+One&family=Inter:wght@400;600&display=swap" rel="stylesheet">
+
+  <style>
+    :root{
+      --paper: #FAF3E0;
+      --ink:   #111111;
+      --red:   #C1121F;
+      --blue:  #003049;
+      --yellow:#F4D35E;
+      --white: #FFFFFF;
+      --black: #28282B;
+    }
+
+    *{ box-sizing:border-box; }
+
+    html, body{
+      margin:0;
+      height:100%;
+    }
+
+    body{
+      font-family:'Inter', system-ui, sans-serif;
+      background:var(--paper);
+      color:var(--ink);
+      overflow:hidden;
+      padding:16px;          /* 👉 ez adja a „margót” a csempe körül */
+    }
+
+    body::before{
+      content:"";
+      position:fixed;
+      inset:-2vmax;
+      pointer-events:none;
+      z-index:-1;
+      background-image:url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='120' height='120'><filter id='n'><feTurbulence type='fractalNoise' baseFrequency='1.1' numOctaves='2' stitchTiles='stitch'/><feColorMatrix type='saturate' values='0'/><feComponentTransfer><feFuncA type='table' tableValues='0 0 0.08 0.12'/></feComponentTransfer></filter><rect width='120' height='120' filter='url(%23n)'/></svg>");
+      mix-blend-mode:multiply;
+      opacity:.2;
+    }
+
+    .slides{
+      position:relative;
+      width:100%;
+      height:100%;   /* 👉 a body belső terét tölti ki, nem a teljes viewportot direktben */
+    }
+
+    .slide{
+      position:absolute;
+      inset:0;
+      display:none;
+    }
+
+    .slide.active{
+      display:block;
+    }
+
+    .tile{
+      width:100%;
+      height:100%;
+      position:relative;
+      cursor:pointer;
+      perspective:1200px;
+
+      /* 👉 kis „tilt”, mint a csempés oldalon */
+      transform:rotate(-1.5deg);
+      transition:transform .3s ease;
+    }
+
+    .tile:hover{
+      transform:rotate(0deg) scale(1.01);
+    }
+
+    .tile-inner{
+      position:absolute;
+      inset:0;
+      transform-style:preserve-3d;
+      transition:transform .6s ease;
+    }
+
+    .tile.flipped .tile-inner{
+      transform:rotateY(180deg);
+    }
+
+    .face{
+      position:absolute;
+      inset:0;
+      display:flex;
+      align-items:center;
+      justify-content:center;
+      padding:40px;
+      text-align:center;
+      backface-visibility:hidden;
+      border:4px solid var(--ink);
+      box-shadow: 6px 6px 0 rgba(0,0,0,.25);
+    }
+
+    .front{
+      background:var(--blue);
+      color:#fff;
+      font-family:'Fjalla One',sans-serif;
+      text-transform:uppercase;
+      line-height:1.1;
+      font-size:clamp(26px, 7vw, 72px);
+    }
+
+    .back{
+      background:var(--ink);
+      color:var(--paper);
+      transform:rotateY(180deg);
+      line-height:1.45;
+      text-align:left;
+      font-size:clamp(16px, 3.3vw, 26px);
+      padding:40px 10vw;
+      overflow:auto;
+    }
+
+    .c-blue  .front{ background:var(--blue); }
+    .c-red   .front{ background:var(--red); }
+    .c-yellow .front{ background:var(--yellow); color:var(--ink); }
+    .c-black .front{ background:var(--black); }
+    .c-white .front{ background:var(--white); color:var(--ink); }
+    .c-paper .front{ background:var(--paper); color:var(--ink); }
+
+    .pager{
+      position:fixed;
+      left:50%;
+      bottom:56px;
+      transform:translateX(-50%);
+      display:flex;
+      align-items:center;
+      gap:12px;
+      font-size:14px;
+      z-index:10;
+    }
+
+    .pager button{
+      border:2px solid var(--ink);
+      background:var(--yellow);
+      font-family:'Fjalla One',sans-serif;
+      text-transform:uppercase;
+      padding:6px 12px;
+      cursor:pointer;
+      letter-spacing:.5px;
+    }
+
+    .pager button:disabled{
+      opacity:.4;
+      cursor:default;
+    }
+
+    .pager span{
+      font-family:'Inter',sans-serif;
+    }
+
+    .back-link{
+      position:fixed;
+      left:50%;
+      bottom:14px;
+      transform:translateX(-50%);
+      z-index:10;
+    }
+
+    .back-link a{
+      font-family:'Fjalla One',sans-serif;
+      text-transform:uppercase;
+      text-decoration:none;
+      color:var(--ink);
+      border:2px solid var(--ink);
+      background:var(--paper);
+      padding:6px 14px;
+      letter-spacing:.4px;
+    }
+  </style>
+</head>
+<body>
+
+  <div class="slides">
+
+    <!-- 1. Béremelés -->
+    <section class="slide active c-blue" data-title="Béremelés">
+      <div class="tile" tabindex="0">
+        <div class="tile-inner">
+          <div class="face front">
+            KISZÁMÍTHATÓ BÉREMELÉST!
+          </div>
+          <div class="face back">
+            <p>A modellváltáskor komoly ígéretet kaptunk: még 2025-ben újabb béremelésre kerül sor, amit 2027-re érdemi felzárkóztatás követ. A kiszámítható béremelésre intézményes garanciát a kollektív szerződés biztosíthat.</p>
+            <p>A BME-n dolgozók bére ma messze elmarad attól a szinttől, ami fedezni tudná az elmúlt évek inflációját és a megélhetési költségek emelkedését. A modellváltáskor azt ígérték, hogy a bérek rendezése prioritás lesz, és még az adott évben újabb emelésre számíthatunk – 2027-re pedig érdemi felzárkóztatásra.</p>
+            <p>Közben a megélhetési költségek folyamatosan nőnek, a munkaterhelés nem csökken. Az oktatók, kutatók és az adminisztratív, technikai dolgozók egyaránt fenntartói az egyetemi működésnek, mégis sokan a létminimum közelében keresnek.</p>
+            <p>A kollektív szerződés az egyetlen intézményes garancia arra, hogy a dolgozók ne eseti ígéretekre, hanem valódi, tárgyalásos, kiszámítható megállapodásokra épülhessen a jövőnk. Ez biztosítja, hogy a bérfejlesztés ne kampányfüggő, hanem kiszámítható, közösen kialkudott rendszeren alapuljon.</p>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- 2. Jubileumi jutalom -->
+    <section class="slide c-red" data-title="Jubileumi jutalom">
+      <div class="tile" tabindex="0">
+        <div class="tile-inner">
+          <div class="face front">
+            JUTALMAZZÁK MEG AZ ELKÖTELEZŐDÉST!
+          </div>
+          <div class="face back">
+            <p>Mindenkinek, aki munkájával elköteleződött az egyetem felé, járjon rendszeresen jubileumi jutalom.</p>
+            <p>Az Egyetemnek szüksége van tapasztalt, elkötelezett munkatársakra, akik biztosítják az oktatás és a kutatás kiszámítható minőségét. A dolgozóknak pedig szükségük van kiszámítható, biztonságos életpályára.</p>
+            <p>A jubileumi jutalom ennek egy fontos, egyszerre szimbolikus és anyagi elismerése. A kollektív szerződéssel rögzíteni tudjuk a jubileumi jutalom mértékét:</p>
+            <ul>
+              <li>5 év munkaviszony után egyhavi,</li>
+              <li>10 év után kéthavi,</li>
+              <li>15 év után háromhavi,</li>
+              <li>40 év után hathavi távolléti díjnak megfelelő összeg.</li>
+            </ul>
+            <p>A jubileumi jutalom nem kegy, hanem az elköteleződés tervezhető elismerése.</p>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- 3. Munkaidő, túlóra -->
+    <section class="slide c-yellow" data-title="Munkaidő, túlóra">
+      <div class="tile" tabindex="0">
+        <div class="tile-inner">
+          <div class="face front">
+            MÉLTÁNYOS MUNKAIDŐT MINDEN DOLGOZÓNAK!
+          </div>
+          <div class="face back">
+            <p>A munkaidő méltányos megszervezése mindenkinek jár – munkakörtől függetlenül. A szabályozásnak biztosítania kell a pihenőidő tiszteletben tartását és a fizetetlen túlóráztatás megszüntetését.</p>
+            <p>Az oktatók, kutatók a tanórákon kívül kötetlen munkaidő-beosztásban dolgoznak, de ez nem jelent korlátlan elérhetőséget: minden munkavállalónak joga van a pihenéshez és a magánélethez.</p>
+            <p>A nem oktató-kutatói munkakörben dolgozók esetében is szükség van kiszámítható munkaidőre. A napi törzsidő biztosítja az együttműködést, a peremidő a rugalmasságot.</p>
+            <p>A távmunka és a folyamatos digitális elérhetőség nem vezethet állandó készenléthez vagy rejtett túlórához. Határidők kijelölésénél figyelembe kell venni a dolgozók munka- és pihenőidejét.</p>
+            <p>Csak a kollektív szerződés garantálja kiszámíthatóan, hogy a rugalmas munkavégzés ne kizsákmányolás, hanem bizalomalapú együttműködés legyen.</p>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- 4. Távmunkavégzés -->
+    <section class="slide c-black" data-title="Távmunkavégzés">
+      <div class="tile" tabindex="0">
+        <div class="tile-inner">
+          <div class="face front">
+            DOLGOZHASSON MINDENKI OTT, AHOL A LEGJOBBAN TUD!
+          </div>
+          <div class="face back">
+            <p>Azokban a munkakörökben, ahol otthonról is lehet dolgozni, minden dolgozónak legyen lehetősége az otthoni távmunkavégzésre – a munkahelyi vezető irányítása mellett.</p>
+            <p>Az oktatói, kutatói munkakörökben már évek óta elfogadott a távmunkavégzés lehetősége. A Covid-válság idején kiderült, hogy a tudásmegosztás sok esetben működik távmunka, távoktatás révén is.</p>
+            <p>A kényszerhelyzet elmúltával kialakult egy kevert működésmód, amikor a munkavégzésre a konkrét helyzetekhez igazodóan hol jelenléti, hol online megoldásokat használnak a dolgozók.</p>
+            <p>Ezt a lehetőséget biztosítani kell az egyetem minden olyan dolgozója számára, akinek a munkaköre nem követeli meg a folyamatos személyes jelenlétet. A távmunka nem kiváltság, hanem a bizalom és a hatékonyság korszerű formája.</p>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- 5. Munkavégzés körülményei -->
+    <section class="slide c-red" data-title="Munkakörülmények">
+      <div class="tile" tabindex="0">
+        <div class="tile-inner">
+          <div class="face front">
+            JÓ MUNKAKÖRÜLMÉNYEKET!
+          </div>
+          <div class="face back">
+            <p>Minden dolgozót megillet az egészséges körülmények közötti munkavégzés joga, enélkül a minőségi oktató-, kutató- és adminisztratív munka nem fenntartható.</p>
+            <p>Az Egyetemnek minden zárt munkahelyen folyamatosan biztosítania kell a megfelelő, 21–24 °C közti hőmérsékletet a téli és nyári időszakban egyaránt (hűtésnél legfeljebb 6 °C-kal lehet alacsonyabb a benti hőmérséklet a kintinél).</p>
+            <p>Munka a tantermekben is folyik, és jelenleg egyes épületekben nem megoldott a tantermek hűtése vagy megfelelő fűtése. Amennyiben a megfelelő hőmérséklet biztosítása nem lehetséges, a dolgozók számára el kell rendelni a távmunkavégzést.</p>
+            <p>A távmunka elrendelésének elmulasztása esetén a munkavállalók mentesülnek a munkavégzési kötelezettségük alól, amíg a munkáltató a fenti értékhatárokon belüli hőmérsékletet nem biztosítja.</p>
+            <p>A munkáltató továbbá biztosítson minden dolgozó számára az egészséges munkavégzést elősegítő eszközöket és infrastruktúrát, ergonomikus széket, asztalt. Az egészséges munkakörnyezet nem luxus, hanem alapvető munkajog.</p>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- 6. Szabadnapok száma -->
+    <section class="slide c-paper" data-title="Szabadnapok">
+      <div class="tile" tabindex="0">
+        <div class="tile-inner">
+          <div class="face front">
+            TÖBBLET SZABADNAPOK A MEGÚJULÁSHOZ!
+          </div>
+          <div class="face back">
+            <p>Az oktatók, kutatók számára biztosított többlet-szabadságnapok nélkülözhetetlenek a tudás folyamatos megújításához és bővítéséhez.</p>
+            <p>A közalkalmazotti státusz többlet-szabadságnapokat biztosított az egyetemi oktatók, kutatók számára. A fenntartóváltással a dolgozók munkavállalói státuszba kerültek, és ezek a napok veszélybe kerültek, mert a Munka Törvénykönyve nem garantálja őket.</p>
+            <p>Az egyetemi világban az oktatási szünetek nem a pihenést, hanem a folyamatos megújulást szolgálják: ekkor van idő olvasni, írni, képezni magunkat, új tudást beépíteni.</p>
+            <p>Ezért a többlet-szabadságokat nem plusz „vakációnak”, hanem a minőségi oktatás és kutatás feltételének kell látni. A kollektív szerződés adhat garanciát arra, hogy ez a jog ne vesszen el, hanem megerősödjön.</p>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- 7. Munkavégzéshez használt technikai eszközök -->
+    <section class="slide c-black" data-title="Eszközök">
+      <div class="tile" tabindex="0">
+        <div class="tile-inner">
+          <div class="face front">
+            MIVEL DOLGOZZAK?!
+          </div>
+          <div class="face back">
+            <p>A munkahelyeken alapvetés, hogy a munkavégzéshez szükséges eszközöket a munkáltató biztosítja. Az egyetemen azonban sokan saját eszközön dolgoznak, mert az legalább biztosan működik, vagy jobban alkalmazkodik az igényekhez.</p>
+            <p>A BME-n az oktatók, kutatók nagy része saját forrásból beszerzett laptopon dolgozik és saját mobiltelefont használ munkára, mert az egyetemi eszközök elavultak, a beszerzés nehézkes, a források korlátozottak.</p>
+            <p>A nem oktató-kutatók gyakran elavult informatikai eszközöket kapnak. Az oktatás informatikai támogatása nem megfelelő: a termekben a projektorok, a számítógépes laborok, a wifi és az online rendszerek nem biztosítják a modern munkavégzés technikai minimumát.</p>
+            <p>Az aránytalanság az egyetemen belül nagy; a szervezeti egységek jellemzően saját forrásból fejlesztenek, ha tudnak. A kollektív szerződésben rögzíthető az eszközminimum: annak meghatározása, hogy a munkáltatónak milyen technikai feltételeket kell biztosítania minden dolgozó számára.</p>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- 8. Kommunikációs garanciák -->
+    <section class="slide c-white" data-title="Kommunikációs garanciák">
+      <div class="tile" tabindex="0">
+        <div class="tile-inner">
+          <div class="face front">
+            SZÓLHASSON A SZAKSZERVEZET – TÖRVÉNYESEN, NYILVÁNOSAN, SZABADON!
+          </div>
+          <div class="face back">
+            <p>A szakszervezet csak akkor tudja megfelelően ellátni érdekvédelmi tevékenységét, ha a törvény által garantált kommunikációs lehetőségeket biztosítja számára az egyetem vezetése.</p>
+            <p>A kollektív szerződésben garantálni kell a nyilvánossághoz fordulás jogát. Az egyetem, az egyetemi vezetés jóhírnevének megőrzésére való hivatkozás nem lehet indok arra, hogy a munkaadó és munkavállalók közti érdekkonfliktus lényegét ne lehessen a nyilvánosság elé tárni.</p>
+            <p>A szakszervezet érdekvédelmi tevékenységének biztosítása megköveteli, hogy jogosult legyen minden olyan, a munkáltató rendelkezésére álló adathoz hozzáférni, amely az érdekvédelemhez nélkülözhetetlen.</p>
+            <p>A szakszervezet jogosult a munkavállalókat a szakszervezeti tevékenységéről tájékoztatni, és a szakszervezeti tevékenységgel kapcsolatos információkat a teljes egyetemi közösség felé közvetíteni. Ehhez szabadon használnia kell az egyetem rendelkezésére álló kommunikációs technológiákat és felületeket.</p>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- 9. Véleménynyilvánítás szabadsága -->
+    <section class="slide c-blue" data-title="Véleménynyilvánítás">
+      <div class="tile" tabindex="0">
+        <div class="tile-inner">
+          <div class="face front">
+            SZABAD VÉLEMÉNYNYILVÁNÍTÁST MINDEN DOLGOZÓNAK!
+          </div>
+          <div class="face back">
+            <p>A kutatás szabadsága elválaszthatatlan az egyetemi dolgozók szabad véleménynyilvánításától. Az egyetemen folyamatos tudástermelés és tudásátadás zajlik, nemzetközi, nyilvános színtereken.</p>
+            <p>Az egyetemen születő új tudás széleskörű terjesztése nemcsak az egyetem és a tudomány számára fontos, hanem alapvető társadalmi érdek is. Ezért nem szabad korlátozni az oktatók, kutatók véleménynyilvánítási szabadságát.</p>
+            <p>Biztosítani kell, hogy az egyetemi oktatók, kutatók a tudásukat ne csak tudóstársaikkal és hallgatóikkal osszák meg, hanem a társadalom egészét is szolgálják azzal, hogy szabadon megszólalhatnak különböző nyilvános színtereken.</p>
+            <p>Az egyetemet nem szabad úgy irányítani, mint egy vállalatot, ahol az „egységes vállalati kommunikációra” hivatkozva korlátozzák a nyilvános, kritikus megszólalási lehetőségeket. A véleményszabadság az egyetemi autonómia alapja.</p>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- 10. Mikor lesz meg a KSZ? -->
+    <section class="slide c-red" data-title="Mikor lesz KSZ?">
+      <div class="tile" tabindex="0">
+        <div class="tile-inner">
+          <div class="face front">
+            NA, DE MIKOR?
+          </div>
+          <div class="face back">
+            <p>A szakszervezet 2025. február 14-én elküldte Rektor Úrnak a kollektív szerződés tárgyalás indító változatát. Azóta több mint fél év eltelt, ideje, hogy a tárgyalások érdemben folytatódjanak.</p>
+            <p>A kollektív szerződés különösen fontos a fenntartóváltást követően. A közalkalmazotti jogállásról szóló törvény korábban számos dolgot a munkavállaló számára kedvezően szabályozott (jubileumi jutalom, bértáblák, felmondási és végkielégítési szabályok). A Munka Törvénykönyve ezeket már nem tartalmazza részletesen.</p>
+            <p>A kollektív szerződésben ugyanakkor el lehet érni kedvező feltételeket, vissza lehet szerezni a modellváltással elvesztett jogok egy részét. Jelenleg az érdemi tárgyalások azzal az indokkal akadoznak, hogy az egyetemi belső szabályozások sem készültek még el.</p>
+            <p>Több mint félévvel a fenntartóváltás után azonban ideje lenne újraindulni az érdemi tárgyalásoknak. Amennyiben a szakszervezet létszáma meghaladja a dolgozók 10%-át, a munkáltató köteles tárgyalni a kollektív szerződésről.</p>
+            <p>A megegyezést ki lehet harcolni, ha sokan vagyunk. Jelentős szakszervezeti taglétszámmal nem lehet megkerülni a kollektív szerződés megkötését.</p>
+          </div>
+        </div>
+      </div>
+    </section>
+
+  </div>
+
+  <div class="pager">
+    <button id="prevBtn">&larr; Előző</button>
+    <span id="pageInfo">1 / 10</span>
+    <button id="nextBtn">Következő &rarr;</button>
+  </div>
+
+  <nav class="back-link">
+    <a href="index.html">EGYÜTT</a>
+  </nav>
+
+  <script>
+    const slides   = document.querySelectorAll('.slide');
+    const prevBtn  = document.getElementById('prevBtn');
+    const nextBtn  = document.getElementById('nextBtn');
+    const pageInfo = document.getElementById('pageInfo');
+
+    let current = 0;
+
+    function updateSlides(){
+      slides.forEach((s, i) => {
+        s.classList.toggle('active', i === current);
+        const tile = s.querySelector('.tile');
+        tile.classList.remove('flipped');
+        tile.setAttribute('aria-pressed','false');
+      });
+      pageInfo.textContent = (current+1) + ' / ' + slides.length;
+      prevBtn.disabled = (current === 0);
+      nextBtn.disabled = (current === slides.length - 1);
+    }
+
+    function goNext(){
+      if(current < slides.length - 1){
+        current++;
+        updateSlides();
+      }
+    }
+
+    function goPrev(){
+      if(current > 0){
+        current--;
+        updateSlides();
+      }
+    }
+
+    prevBtn.addEventListener('click', goPrev);
+    nextBtn.addEventListener('click', goNext);
+
+    document.addEventListener('keydown', e => {
+      if(e.key === 'ArrowRight'){ goNext(); }
+      if(e.key === 'ArrowLeft'){ goPrev(); }
+    });
+
+    document.querySelectorAll('.tile').forEach(tile => {
+      tile.setAttribute('aria-pressed','false');
+      tile.addEventListener('click', () => {
+        const flipped = tile.classList.toggle('flipped');
+        tile.setAttribute('aria-pressed', String(flipped));
+      });
+      tile.addEventListener('keydown', e => {
+        if(e.key === ' ' || e.key === 'Enter'){
+          e.preventDefault();
+          const flipped = tile.classList.toggle('flipped');
+          tile.setAttribute('aria-pressed', String(flipped));
+        }
+      });
+    });
+
+    updateSlides();
+  </script>
+</body>
+</html>
