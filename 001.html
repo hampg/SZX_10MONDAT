@@ -45,10 +45,14 @@
     }
 
     .slides{
-      position:relative;
-      width:80%;
-      height:80%;   /* 👉 a body belső terét tölti ki, nem a teljes viewportot direktben */
-    }
+  position:relative;
+  width:80%;
+  height:80%;
+  margin: 0 auto;        /* ➜ vízszintes középre igazítás */
+  display: flex;         /* ➜ a gyerek (csempe) középre kerül */
+  align-items: center;   /* ➜ függőlegesen középre */
+  justify-content:center;/* ➜ vízszintesen középre */
+}
 
     .slide{
       position:absolute;
