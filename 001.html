@@ -92,49 +92,16 @@
     }
 
 .face{
-  position:absolute;
-  inset:0;
-  display:flex;
-  align-items:center;
-  justify-content:center;
-  padding:40px;
-  text-align:center;
-  backface-visibility:hidden;
-
-  /* kontúr */
-  border:4px solid var(--ink);
-
-  /* 👉 elmosódottabb árnyék */
-  box-shadow: 10px 14px 28px rgba(0,0,0,.28);
-
-  /* 👉 kopott élű keret maszkja (darabosabb) */
-  -webkit-mask-image:url("data:image/svg+xml;utf8,
-    <svg xmlns='http://www.w3.org/2000/svg' width='320' height='320'>
-      <filter id='rough'>
-        <feTurbulence type='fractalNoise'
-          baseFrequency='1.05'
-          numOctaves='3'
-          stitchTiles='stitch'/>
-        <feDisplacementMap in='SourceGraphic' scale='11'/>
-      </filter>
-      <rect width='320' height='320' filter='url(%23rough)'/>
-    </svg>");
-  -webkit-mask-size:cover;
-  -webkit-mask-repeat:no-repeat;
-
-  mask-image:url("data:image/svg+xml;utf8,
-    <svg xmlns='http://www.w3.org/2000/svg' width='320' height='320'>
-      <filter id='rough'>
-        <feTurbulence type='fractalNoise'
-          baseFrequency='1.05'
-          numOctaves='3'
-          stitchTiles='stitch'/>
-        <feDisplacementMap in='SourceGraphic' scale='11'/>
-      </filter>
-      <rect width='320' height='320' filter='url(%23rough)'/>
-    </svg>");
-  mask-size:cover;
-  mask-repeat:no-repeat;
+      position:absolute;
+      inset:0;
+      display:flex;
+      align-items:center;
+      justify-content:center;
+      padding:40px;
+      text-align:center;
+      backface-visibility:hidden;
+      border:4px solid var(--ink);
+      box-shadow: 10px 14px 28px rgba(0,0,0,.28);
 }
 
     .front{
