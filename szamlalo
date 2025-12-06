@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html lang="hu">
+<head>
+  <meta charset="UTF-8">
+  <title>Eltelt idő számláló</title>
+  <style>
+    body {
+      font-family: system-ui, -apple-system, BlinkMacSystemFont, sans-serif;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      height: 100vh;
+      margin: 0;
+      background: #f4f4f4;
+    }
+    .counter {
+      font-size: 2rem;
+      padding: 20px 30px;
+      background: white;
+      border-radius: 12px;
+      box-shadow: 0 10px 30px rgba(0,0,0,0.1);
+    }
+  </style>
+</head>
+<body>
+
+<div class="counter" id="elapsed">
+  Számolás indul...
+</div>
+
+<script>
+  // ⬇⬇⬇ ITT ÁLLÍTSD BE A KEZDŐ IDŐPONTOT ⬇⬇⬇
+  // Formátum: 'ÉÉÉÉ-HH-NNÓÓ:PP:MM'
+  const startTime = new Date('2024-12-01T12:00:00');
+
+  function updateCounter() {
+    const now = new Date();
+    let diffMs = now - startTime;
+
+    // ha a kezdő időpont a jövőben van, ne menjen mínuszba
+    if (diffMs < 0) diffMs = 0;
+
+    const totalMinutes = Math.floor(diffMs / (1000 * 60));
+    const days  = Math.floor(totalMinutes / (60 * 24));
+    const hours = Math.floor((totalMinutes % (60 * 24)) / 60);
+    const mins  = totalMinutes % 60;
+
+    const text = `${days} napja ${hours} órája ${mins} perce`;
+    document.getElementById('elapsed').textContent = text;
+  }
+
+  // induláskor rögtön frissít
+  updateCounter();
+  // majd másodpercenként frissítjük
+  setInterval(updateCounter, 1000);
+</script>
+
+</body>
+</html>
